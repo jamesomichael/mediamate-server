@@ -5,18 +5,19 @@ const SERIALIZE_QUERIES = [
 		\`source\` TEXT NOT NULL,\
 	    \`title\` TEXT NOT NULL,\
 	    \`description\` TEXT NULL,\
-		\`durationInSeconds\` TEXT NULL,\
+		\`durationInSeconds\` INTEGER NULL,\
 		\`url\` TEXT NULL,\
-		\`uploadedAt\` TEXT NULL,\
+		\`uploadedAt\` DATETIME NULL,\
 		\`thumbnailUrl\` TEXT NULL,\
 		\`category\` TEXT NULL,\
-		\`chapters\` TEXT NULL,\
+		\`chapters\` BLOB NULL,\
 		\`channelId\` TEXT NULL,\
 		\`channelName\` TEXT NULL,\
 		\`channelUser\` TEXT NULL,\
 		\`channelUrl\` TEXT NULL,\
 		\`channelProfilePicUrl\` TEXT NULL,\
 		\`embedUrl\` TEXT NULL,\
+		\`downloadedAt\` DATETIME DEFAULT CURRENT_TIMESTAMP,\
 		PRIMARY KEY (\`id\`, \`type\`)\
 	)`,
 ];
