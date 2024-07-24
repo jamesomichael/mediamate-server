@@ -2,9 +2,11 @@ const ytdl = require('ytdl-core');
 
 const database = require('../database/database');
 const download = require('../services/download.service');
+const { downloadAsset } = require('../services/assets.service');
 
 const { DOWNLOAD_OUTPUT_DIR } = process.env;
 
+const SOURCE = 'youtube';
 const WHITELISTED_PARAMS = ['v', 'list'];
 
 const filterUrl = (url, shouldDownloadPlaylist) => {
@@ -59,7 +61,7 @@ module.exports = {
 		const downloadData = {
 			id: videoId,
 			type,
-			source: 'youtube',
+			source: SOURCE,
 			title: videoTitle,
 			description: videoDescription,
 			durationInSeconds,
@@ -75,6 +77,24 @@ module.exports = {
 			channelProfilePicUrl,
 			embedUrl,
 		};
+
+		const assetData = [
+			{
+				type: 'thumbnail',
+				url: videoThumbnailUrl,
+				fileName: `${SOURCE}|${videoId}`,
+			},
+			{
+				type: 'channelProfilePic',
+				url: channelProfilePicUrl,
+				fileName: `${SOURCE}|${encodeURIComponent(channelUser)}`,
+			},
+		];
+
+		const assetPromises = assetData.map((data) =>
+			downloadAsset(data.url, data.fileName, data.type)
+		);
+		await Promise.all(assetPromises);
 
 		await database.insert(downloadData);
 
