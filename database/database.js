@@ -16,26 +16,26 @@ db.serialize(async () => {
 	await Promise.all(promises);
 });
 
-const insert = async (downloadData) => {
-	const { id } = downloadData;
-	try {
-		const { query, dataArray } = buildInsertionData(downloadData);
-		console.log('Inserting data:', JSON.stringify(downloadData));
-		await db.run(query, dataArray);
-	} catch (error) {
-		return console.error(err.message);
-	}
-	console.log(`Data has been inserted for download '${id}'.`);
-};
+module.exports = {
+	insert: async (downloadData) => {
+		const { id } = downloadData;
+		try {
+			const { query, dataArray } = buildInsertionData(downloadData);
+			console.log('Inserting data:', JSON.stringify(downloadData));
+			await db.run(query, dataArray);
+		} catch (error) {
+			return console.error(err.message);
+		}
+		console.log(`Data has been inserted for download '${id}'.`);
+	},
 
-const close = async () => {
-	console.log('Closing database connection...');
-	try {
-		await db.close();
-	} catch (error) {
-		return console.error(err.message);
-	}
-	console.log('Database connection closed.');
+	close: async () => {
+		console.log('Closing database connection...');
+		try {
+			await db.close();
+		} catch (error) {
+			return console.error(err.message);
+		}
+		console.log('Database connection closed.');
+	},
 };
-
-module.exports = { insert, close };
