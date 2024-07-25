@@ -9,6 +9,7 @@ const SERIALIZE_QUERIES = [
 		\`url\` TEXT NULL,\
 		\`uploadedAt\` DATETIME NULL,\
 		\`thumbnailUrl\` TEXT NULL,\
+		\`thumbnailFileName\` TEXT NULL,\
 		\`category\` TEXT NULL,\
 		\`chapters\` BLOB NULL,\
 		\`channelId\` TEXT NULL,\
@@ -16,6 +17,7 @@ const SERIALIZE_QUERIES = [
 		\`channelUser\` TEXT NULL,\
 		\`channelUrl\` TEXT NULL,\
 		\`channelProfilePicUrl\` TEXT NULL,\
+		\`channelProfilePicFileName\` TEXT NULL,\
 		\`embedUrl\` TEXT NULL,\
 		\`downloadedAt\` DATETIME DEFAULT CURRENT_TIMESTAMP,\
 		PRIMARY KEY (\`id\`, \`type\`)\
