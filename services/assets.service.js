@@ -20,7 +20,7 @@ const downloadAsset = async (url, fileName, type) => {
 			writer.on('error', reject);
 		});
 		console.log(`Asset saved to '${filePath}'.`);
-		return true;
+		return fileName;
 	} catch (error) {
 		console.error('Cannot download asset:', JSON.stringify(error));
 		return false;

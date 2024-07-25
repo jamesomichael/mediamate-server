@@ -58,26 +58,6 @@ module.exports = {
 		const videoThumbnail = videoThumbnails.pop();
 		const videoThumbnailUrl = videoThumbnail.url;
 
-		const downloadData = {
-			id: videoId,
-			type,
-			source: SOURCE,
-			title: videoTitle,
-			description: videoDescription,
-			durationInSeconds,
-			url: videoUrl,
-			uploadedAt,
-			thumbnailUrl: videoThumbnailUrl,
-			category,
-			chapters,
-			channelId,
-			channelName,
-			channelUser,
-			channelUrl,
-			channelProfilePicUrl,
-			embedUrl,
-		};
-
 		const assetData = [
 			{
 				type: 'thumbnail',
@@ -94,7 +74,30 @@ module.exports = {
 		const assetPromises = assetData.map((data) =>
 			downloadAsset(data.url, data.fileName, data.type)
 		);
-		await Promise.all(assetPromises);
+		const [thumbnailFileName, channelProfilePicFileName] =
+			await Promise.all(assetPromises);
+
+		const downloadData = {
+			id: videoId,
+			type,
+			source: SOURCE,
+			title: videoTitle,
+			description: videoDescription,
+			durationInSeconds,
+			url: videoUrl,
+			uploadedAt,
+			thumbnailUrl: videoThumbnailUrl,
+			thumbnailFileName,
+			category,
+			chapters,
+			channelId,
+			channelName,
+			channelUser,
+			channelUrl,
+			channelProfilePicUrl,
+			channelProfilePicFileName,
+			embedUrl,
+		};
 
 		await database.insert(downloadData);
 
