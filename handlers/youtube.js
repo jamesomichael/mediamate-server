@@ -50,7 +50,7 @@ module.exports = {
 			category,
 			chapters,
 			author: { user: channelUser, thumbnails: authorThumbnails },
-			embed: { iframeUrl: embedUrl },
+			embed: { iframeUrl: embedUrl = '' } = {},
 			thumbnails: videoThumbnails,
 		} = videoInfo.videoDetails;
 
@@ -105,6 +105,7 @@ module.exports = {
 			type === 'audio' ? ['-x', '--audio-format', 'mp3'] : [];
 		const args = [
 			...audioArgs,
+			// ...['--write-sub', '--write-auto-sub', '--sub-lang', '"en.*"'],
 			filteredUrl,
 			'-P',
 			`${DOWNLOAD_OUTPUT_DIR}/${type}`,
