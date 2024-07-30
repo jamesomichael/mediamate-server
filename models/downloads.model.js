@@ -7,6 +7,7 @@ const handleDownload = async (url, options) => {
 	const site = sites.find((s) =>
 		new RegExp(s, 'gi').test(parsedUrl.hostname)
 	);
+	console.log('site', site);
 	await handlers[site].process(parsedUrl, options);
 };
 

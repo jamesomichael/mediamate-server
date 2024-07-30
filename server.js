@@ -15,18 +15,31 @@ app.use(express.json());
 app.use(cors());
 
 app.post('/download', async (req, res) => {
-	const url = req?.body?.url;
-	const type = req?.body?.type;
-	const shouldDownloadPlaylist = req?.body?.shouldDownloadPlaylist;
+	try {
+		const url = req?.body?.url;
+		const type = req?.body?.type;
+		const shouldDownloadPlaylist = req?.body?.shouldDownloadPlaylist;
 
-	if (!url) {
-		res.status(500);
-		res.json({ error: 'URL not provided.' });
+		if (!url) {
+			res.status(500);
+			res.json({ error: 'URL not provided.' });
+			res.end();
+			return;
+		}
+
+		await downloadsModel.handleDownload(url, {
+			type,
+			shouldDownloadPlaylist,
+		});
+		res.status(200);
+		res.json({ success: true });
 		res.end();
-		return;
+	} catch (error) {
+		console.error(error.message);
+		res.status(500);
+		res.json({ error: 'Cannot download video.' });
+		res.end();
 	}
-
-	await downloadsModel.handleDownload(url, { type, shouldDownloadPlaylist });
 });
 
 app.get('/media', async (req, res) => {
