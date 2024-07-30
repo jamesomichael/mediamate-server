@@ -4,9 +4,12 @@ const express = require('express');
 const cors = require('cors');
 
 const downloadsModel = require('./models/downloads.model');
+const mediaModel = require('./models/media.model');
+const database = require('./database/database');
 
 const app = express();
-const { PORT } = process.env;
+
+const { PORT, DOWNLOAD_OUTPUT_DIR } = process.env;
 
 app.use(express.json());
 app.use(cors());
@@ -26,7 +29,15 @@ app.post('/download', async (req, res) => {
 	await downloadsModel.handleDownload(url, { type, shouldDownloadPlaylist });
 });
 
+app.get('/media', async (req, res) => {
+	const mediaDir = req?.body?.mediaDir || DOWNLOAD_OUTPUT_DIR;
+	await mediaModel.getMedia(mediaDir);
+});
+
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
+	console.log('Serializing database...');
+	await database.initialize();
+	console.log('Serialization complete.');
 });
