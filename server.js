@@ -44,7 +44,10 @@ app.post('/download', async (req, res) => {
 
 app.get('/media', async (req, res) => {
 	const mediaDir = req?.body?.mediaDir || DOWNLOAD_OUTPUT_DIR;
-	await mediaModel.getMedia(mediaDir);
+	const media = await mediaModel.getMedia(mediaDir);
+	res.status(200);
+	res.json(media);
+	res.end();
 });
 
 // Start the server

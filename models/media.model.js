@@ -2,34 +2,33 @@ const fs = require('fs');
 
 const database = require('../database/database');
 
+const extractVideoId = (str) => {
+	const regex = /\[([a-zA-Z0-9_-]+)\](?:\.\w+)?$/;
+	const match = str.match(regex);
+	return match ? match[1] : null;
+};
+
 module.exports = {
 	getMedia: async (mediaDir) => {
-		const media = {
-			video: {},
-			audio: {},
-			// assets: {
-			// 	channelProfilePics: {},
-			// 	thumbnails: {},
-			// },
-		};
-		// const videoDir = `${mediaDir}/video`;
-		// const audioDir = `${mediaDir}/audio`;
-		// const assetDir = `${mediaDir}/assets`;
-		// const files = fs.readdirSync(dir);
-		// files.forEach((file) => {
-		// 	console.log('file', file);
-		// });
+		const types = ['audio', 'video'];
 		const downloadsMetadata = await database.selectAll();
-		console.log('downloadsMetadata', downloadsMetadata);
-		return;
-		Object.entries(media).forEach(([key, value]) => {
-			const dir = `${mediaDir}/${key}`;
+		const media = [];
+		types.forEach((type) => {
+			const dir = `${mediaDir}/${type}`;
 			const files = fs.readdirSync(dir);
-			const filteredFiles = files.filter((file) => file !== '.DS_Store');
-			value.dir = dir;
-			value.files = filteredFiles;
+			const detailedFiles = files
+				.filter((file) => file !== '.DS_Store')
+				.map((file) => {
+					const videoId = extractVideoId(file);
+					const [metadata = {}] = downloadsMetadata.filter(
+						(data) => data.id === videoId && data.type === type
+					);
+					metadata.fileName = file;
+					metadata.fileLocation = `${dir}/${file}`;
+					return metadata;
+				});
+			media.push(...detailedFiles);
 		});
-
-		console.log('media', media);
+		return media;
 	},
 };
