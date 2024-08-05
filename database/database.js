@@ -45,7 +45,7 @@ module.exports = {
 			await db.run(query, dataArray);
 			await close(db);
 		} catch (error) {
-			return console.error(err.message);
+			return console.error(error.message);
 		}
 		console.log(`Data has been inserted for download '${id}'.`);
 	},
