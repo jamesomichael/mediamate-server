@@ -19,8 +19,8 @@ const runCommand = (args) => {
 		});
 
 		child.stderr.on('data', (data) => {
-			error += data.toString();
-			console.error(`[YT-DLP] ${data}`);
+			error += data.toString().trim();
+			console.error(`[YT-DLP] ${data}`.trim());
 		});
 
 		child.on('close', (code) => {

@@ -4,8 +4,8 @@ const x = require('./x');
 const generic = require('./generic');
 
 module.exports = {
-	youtube,
-	twitch,
-	x,
+	// youtube,
+	// twitch,
+	// x,
 	generic,
 };

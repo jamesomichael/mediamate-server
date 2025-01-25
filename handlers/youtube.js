@@ -40,7 +40,10 @@ module.exports = {
 			try {
 				videoInfo = await ytdl.getInfo(filteredUrl.href);
 			} catch (error) {
-				throw new Error('Cannot get YouTube video information.');
+				console.error(error);
+				throw new Error(
+					'Cannot get YouTube video information. The video may have been deleted or is age-restricted.'
+				);
 			}
 
 			const {

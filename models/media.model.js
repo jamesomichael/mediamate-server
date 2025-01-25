@@ -17,7 +17,7 @@ module.exports = {
 			const dir = `${mediaDir}/${type}`;
 			const files = fs.readdirSync(dir);
 			const detailedFiles = files
-				.filter((file) => file !== '.DS_Store')
+				.filter((file) => file !== '.DS_Store' && !/\.part$/.test(file))
 				.map((file) => {
 					const videoId = extractVideoId(file);
 					const [metadata = {}] = downloadsMetadata.filter(

@@ -8,7 +8,11 @@ const handleDownload = async (url, options) => {
 		new RegExp(s, 'gi').test(parsedUrl.hostname)
 	);
 	console.log('site', site);
-	await handlers[site].process(parsedUrl, options);
+	if (handlers[site]) {
+		await handlers[site].process(parsedUrl, options);
+	} else {
+		await handlers.generic.process(parsedUrl);
+	}
 };
 
 module.exports = { handleDownload };
