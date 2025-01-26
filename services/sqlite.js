@@ -5,6 +5,7 @@ const { DATABASE_FILE_PATH } = process.env;
 
 const SERIALIZE_QUERIES = [
 	`CREATE TABLE IF NOT EXISTS \`jobs\` (\
+		\`id\` INTEGER NOT NULL,
 	    \`url\` TEXT NOT NULL,\
 		\`type\` TEXT NOT NULL CHECK (\`type\` IN ('video', 'audio')),\
 		\`status\` TEXT NOT NULL CHECK (\`status\` IN ('PENDING', 'IN_PROGRESS', 'COMPLETED', 'FAILED')),\
@@ -14,6 +15,7 @@ const SERIALIZE_QUERIES = [
 		PRIMARY KEY (\`url\`, \`type\`)\
 	)`,
 	`CREATE TABLE IF NOT EXISTS \`downloads\` (\
+		\`id\` INTEGER NOT NULL,
 	    \`url\` TEXT NOT NULL,\
 		\`type\` TEXT NOT NULL CHECK (\`type\` IN ('video', 'audio')),\
 		\`addedAt\` DATETIME NOT NULL DEFAULT (DATETIME('now', 'utc')),\

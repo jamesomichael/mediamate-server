@@ -4,8 +4,8 @@ const createJob = async (req, res) => {
 	const { body } = req;
 	const { url } = body;
 	try {
-		await jobsModel.createJob(url);
-		res.status(200).json({ success: true, url });
+		const data = await jobsModel.createJob(url);
+		res.status(200).json({ success: true, ...data });
 	} catch (error) {
 		if (/UNIQUE constraint failed/.test(error.message)) {
 			res.status(409).json({
