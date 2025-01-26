@@ -6,7 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { errors } = require('celebrate');
-const jobsRoutes = require('./routes/jobs');
+const jobsRouter = require('./routes/jobs');
 
 const { PORT } = process.env;
 
@@ -22,7 +22,7 @@ app.use('/docs', (req, res) => {
 	res.send(apiDoc);
 });
 
-app.use('/jobs', jobsRoutes);
+app.use('/jobs', jobsRouter);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}...`);

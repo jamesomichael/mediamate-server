@@ -1,18 +1,15 @@
 const express = require('express');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate } = require('celebrate');
 const asyncHandler = require('express-async-handler');
 
-const jobsController = require('../controllers/jobs.controller');
+const jobsController = require('../controllers/jobs');
+const jobsSchemas = require('../schemas/jobs');
 
 const router = express.Router();
 
 router.post(
 	'/',
-	celebrate({
-		body: Joi.object().keys({
-			url: Joi.string().uri().required(),
-		}),
-	}),
+	celebrate(jobsSchemas.createJob),
 	asyncHandler(jobsController.createJob)
 );
 
