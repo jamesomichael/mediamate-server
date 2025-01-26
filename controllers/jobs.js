@@ -1,9 +1,19 @@
+const jobsModel = require('../models/jobs');
+
 const createJob = async (req, res) => {
-	// console.log('req.body', req.request.body);
 	const { body } = req;
-	console.log('body', body);
 	const { url } = body;
-	res.status(200).json({ success: true, url });
+	try {
+		await jobsModel.createJob(url);
+		res.status(200).json({ success: true, url });
+	} catch (error) {
+		if (/UNIQUE constraint failed/.test(error.message)) {
+			res.status(409).json({
+				success: false,
+				message: 'A job has already been created for this item.',
+			});
+		}
+	}
 };
 
 module.exports = { createJob };

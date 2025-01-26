@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { errors } = require('celebrate');
 const jobsRouter = require('./routes/jobs');
+const database = require('./services/sqlite');
 
 const { PORT } = process.env;
 
@@ -24,6 +25,9 @@ app.use('/docs', (req, res) => {
 
 app.use('/jobs', jobsRouter);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
 	console.log(`Server is running on port ${PORT}...`);
+	console.log('Serialising database...');
+	await database.serialise();
+	console.log('Database serialised.');
 });
