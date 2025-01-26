@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+    title: mediamate Server
+    description: mediamate Server
+    version: 1.0.0
+servers:
+    - url: http://localhost:6556
+tags:
+    - name: jobs
+      description: Jobs.
+    - name: download
+      description: Download.
+paths:
+    /jobs:
+        post:
+            tags:
+                - jobs
+            summary: Add a new job.
+            description: Add a new job.
+            operationId: createJob
+            requestBody:
+                description: Initialise a new job in the database.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateJob'
+                required: true
+            responses:
+                '200':
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateJobResponse'
+                '400':
+                    description: Invalid input
+                '422':
+                    description: Validation exception
+components:
+    schemas:
+        CreateJob:
+            type: object
+            properties:
+                url:
+                    type: string
+                    example: 'https://www.youtube.com/watch?v=123456789'
+        CreateJobResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                    example: true
+                url:
+                    type: string
+                    example: 'https://www.youtube.com/watch?v=123456789'

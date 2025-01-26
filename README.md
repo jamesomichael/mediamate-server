@@ -1,1 +1,0 @@
-# mediamate-server

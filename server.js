@@ -1,59 +1,29 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config();
+}
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
+const { errors } = require('celebrate');
+const jobsRoutes = require('./routes/jobs');
 
-const downloadsModel = require('./models/downloads.model');
-const mediaModel = require('./models/media.model');
-const database = require('./database/database');
+const { PORT } = process.env;
+
+// const apiDoc = require('./docs/openapi.yml');
 
 const app = express();
 
-const { PORT, DOWNLOAD_OUTPUT_DIR } = process.env;
-
-app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json());
+app.use(errors());
 
-app.post('/download', async (req, res) => {
-	try {
-		const url = req?.body?.url;
-		const type = req?.body?.type;
-		const shouldDownloadPlaylist = req?.body?.shouldDownloadPlaylist;
-
-		if (!url) {
-			res.status(500);
-			res.json({ error: 'URL not provided.' });
-			res.end();
-			return;
-		}
-
-		await downloadsModel.handleDownload(url, {
-			type,
-			shouldDownloadPlaylist,
-		});
-		res.status(200);
-		res.json({ success: true });
-		res.end();
-	} catch (error) {
-		console.error(error.message);
-		res.status(500);
-		res.json({ error: 'Cannot download video.' });
-		res.end();
-	}
+app.use('/docs', (req, res) => {
+	res.send(apiDoc);
 });
 
-app.get('/media', async (req, res) => {
-	const mediaDir = req?.body?.mediaDir || DOWNLOAD_OUTPUT_DIR;
-	const media = await mediaModel.getMedia(mediaDir);
-	res.status(200);
-	res.json(media);
-	res.end();
-});
+app.use('/jobs', jobsRoutes);
 
-// Start the server
-app.listen(PORT, async () => {
-	console.log(`Server is running on http://localhost:${PORT}`);
-	console.log('Serializing database...');
-	await database.initialize();
-	console.log('Serialization complete.');
+app.listen(PORT, () => {
+	console.log(`Server is running on port ${PORT}...`);
 });
