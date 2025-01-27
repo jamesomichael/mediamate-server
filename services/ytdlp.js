@@ -10,7 +10,7 @@ const download = async (url, type) => {
 		...audioArgs,
 		url,
 		'-P',
-		`${DOWNLOAD_OUTPUT_DIR}/video`,
+		`${DOWNLOAD_OUTPUT_DIR}/${type}`,
 		'--no-playlist',
 	];
 	return new Promise((resolve, reject) => {

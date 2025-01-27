@@ -2,9 +2,9 @@ const jobsModel = require('../models/jobs');
 
 const createJob = async (req, res) => {
 	const { body } = req;
-	const { url } = body;
+	const { url, type } = body;
 	try {
-		const data = await jobsModel.createJob(url);
+		const data = await jobsModel.createJob(url, type);
 		res.status(200).json({ success: true, ...data });
 	} catch (error) {
 		if (/UNIQUE constraint failed/.test(error.message)) {
