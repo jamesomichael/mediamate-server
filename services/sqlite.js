@@ -12,6 +12,7 @@ const SERIALIZE_QUERIES = [
 		\`addedAt\` DATETIME NOT NULL DEFAULT (DATETIME('now', 'utc')),\
 	    \`updatedAt\` DATETIME NULL DEFAULT (DATETIME('now', 'utc')),\
 	    \`completedAt\` DATETIME NULL,\
+		\`error\` TEXT NULL,\
 		PRIMARY KEY (\`url\`, \`type\`)\
 	)`,
 	`CREATE TABLE IF NOT EXISTS \`downloads\` (\
@@ -80,26 +81,17 @@ module.exports = {
 			console.error(error.message);
 			throw new Error(error.message);
 		}
-		console.log(`Data has been inserted for job '${url}'.`);
 	},
-	// selectAll: async () => {
-	// 	console.log('Selecting all data...');
-	// 	try {
-	// 		const query = 'SELECT * FROM `downloads`;';
-	// 		// console.log('db', db);
-	// 		// const data = await db.all(query);
-	// 		// const db1 = await sqlite.open({
-	// 		// 	filename: DATABASE_FILE_PATH,
-	// 		// 	driver: sqlite3.Database,
-	// 		// });
-	// 		const db = await connect();
-	// 		const data = await db.all(query);
-	// 		console.log(data);
-	// 		console.log(`Data: ${JSON.stringify(data)}`);
-	// 		await close(db);
-	// 		return data;
-	// 	} catch (error) {
-	// 		return console.error(err.message);
-	// 	}
-	// },
+	select: async (query, params = []) => {
+		// try {
+		const db = await connect();
+		const results = await db.all(query, params);
+		return results;
+		// }
+	},
+	update: async (query, params = []) => {
+		const db = await connect();
+		const results = await db.run(query, params);
+		return results;
+	},
 };

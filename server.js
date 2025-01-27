@@ -9,6 +9,8 @@ const { errors } = require('celebrate');
 const jobsRouter = require('./routes/jobs');
 const database = require('./services/sqlite');
 
+const { scheduleTasks } = require('./tasks');
+
 const { PORT } = process.env;
 
 // const apiDoc = require('./docs/openapi.yml');
@@ -31,3 +33,5 @@ app.listen(PORT, async () => {
 	await database.serialise();
 	console.log('Database serialised.');
 });
+
+scheduleTasks();
