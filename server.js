@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { errors } = require('celebrate');
 const jobsRouter = require('./routes/jobs');
+const mediaRouter = require('./routes/media');
+const playRouter = require('./routes/play');
+
 const database = require('./services/sqlite');
 
 const { scheduleTasks } = require('./tasks');
@@ -26,6 +29,8 @@ app.use('/docs', (req, res) => {
 });
 
 app.use('/jobs', jobsRouter);
+app.use('/media', mediaRouter);
+app.use('/play', playRouter);
 
 app.listen(PORT, async () => {
 	console.log(`Server is running on port ${PORT}...`);
