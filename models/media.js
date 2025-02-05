@@ -7,7 +7,9 @@ const MEDIA_TYPES = ['audio', 'video'];
 
 const getMedia = async () => {
 	const [audioFiles, videoFiles] = MEDIA_TYPES.map((type) =>
-		fs.readdirSync(`${MEDIA_DIR}/${type}`)
+		fs
+			.readdirSync(`${MEDIA_DIR}/${type}`)
+			.filter((file) => !file.startsWith('._'))
 	);
 	const files = {
 		audio: audioFiles,
